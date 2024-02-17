@@ -1,0 +1,197 @@
+{% extends "index.html" %}
+
+
+
+
+{% block body %}
+
+
+<div class="modal fade custom-modal" id="submitionModal"  tabindex="-1" role="dialog" aria-labelledby="submitionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="submitionModalLabel">Submition Form</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <div id="alertTagResponse" class="alertTag">
+            </div>
+
+            <div class=" w3-animate-zoom" style="padding:32px;max-width:600px">
+                <div class=" w3-white w3-center">
+                <h1 class="w3-wide">CAN YOU COME?</h1>
+                <p>We really hope you can make it.</p>
+                
+                <form id="submitionForm">
+                    <div id="singlesList">
+                    </div>
+                    <br>
+                    <div class="mb-0">
+                        <label class="mb-1 small text-muted" for="submitionDescription" >Memo</label>
+                        <textarea class="form-control" id="submitionDescription" rows="3"></textarea>
+                    </div>  
+                </form>
+                <p><i>Sincerely, Ahmad & Maryam</i></p>
+
+                </div>
+            </div>
+
+            </div>
+        <div class="modal-footer">
+            <button class="btn btn-light-soft text-light" type="button" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-yellow-soft text-yellow" type="button" onclick="submitForm()">Submit</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block body2 %}
+
+<div class="w3-container w3-padding-64 w3-center w3-wide" id="rsvp">
+    <h1>HOPE YOU CAN MAKE IT!</h1>
+    <p class="w3-small" style="margin-bottom: 0%; padding-bottom: 0;">Kindly Respond By the</p>
+    <p class="w3-small" style="margin-top: 0%; padding-top: 0;">18th of March</p>
+    <p class="w3-xlarge">
+      <button type="button" data-bs-toggle="modal" data-bs-target="#submitionModal" class=" btn w3-button w3-round w3-white w3-opacity w3-hover-opacity-off" style="padding:8px 60px; box-shadow: 2px 2px #000000;">RSVP</button>
+    </p>
+</div>
+
+{% endblock %}
+
+
+
+
+
+{% block scripts %}
+
+<script>
+
+    let singlesData;
+
+    function fillDetails() {
+        const pathname = window.location.pathname;
+        const segments = pathname.split('/');
+        const guestId = segments[2];
+        const url = `/singles_data/${guestId}`;
+
+        fetch(url, {
+        method: 'GET'
+        })
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            singlesData = data; 
+
+            const singlesList = document.getElementById('singlesList');
+            singlesList.innerHTML = '';
+            var innerList = '';
+
+            const isChecked = singlesData.response ? 'checked' : '';
+
+            document.getElementById('invition_text').innerHTML = `<b>Dear ${singlesData.prefix} ${singlesData.family_name} we forward to you this invitation.</b>`
+            
+
+            innerList +=
+            `<tr class="border-bottom">
+                <td>
+                    <div class="fw-bold" id="name">${singlesData.name} ${singlesData.family_name}</div>
+                </td>
+                <td class="text-end fw-bold">
+                    <input class="form-check-input" name="checkbox_singles" id="checkbox_singles" type="checkbox" value="" ${isChecked}/>
+                </td>
+            </tr>`;
+
+            singlesList.innerHTML +=
+            `
+            <table class="table table-borderless mb-0">
+                <thead class="border-bottom">
+                    <tr class="small text-uppercase text-muted">
+                        <th scope="col">Guest Name</th>
+                        <th class="text-end" scope="col">Attending</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${innerList}
+                </tbody>
+            </table>
+            `;
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+    }
+
+
+    window.addEventListener('DOMContentLoaded', event => {
+      fillDetails();
+    });
+
+
+    function submitForm() {
+        let data = new FormData();
+        data.response = document.querySelector('form #checkbox_singles').checked;
+        data.comment = document.querySelector('form #submitionDescription').value;
+        data.single_id = singlesData.single_id
+
+        fetch('/api/update_responses_singles', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+
+                const myModal = bootstrap.Modal.getOrCreateInstance('#submitionModal')
+                myModal.hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+
+                document.querySelector('form #submitionDescription').value = '';
+                
+            } else {
+                console.error('Failed to update responses');
+            }
+        })
+        .catch(error => console.error('Error updating responses:', error));
+    }
+
+
+
+
+
+
+    var customModals = document.querySelectorAll('.custom-modal');
+    // Loop through each modal and attach the event listener
+    customModals.forEach(function (modal) {
+        modal.addEventListener('hidden.bs.modal', function () {
+            // Remove 'is-invalid' class from all inputs and selects inside the modal
+            var inputs = this.querySelectorAll('input, select');
+            inputs.forEach(function (input) {
+                input.classList.remove('is-invalid');
+            });
+
+            var errorMessages = this.querySelectorAll('.alertTag');
+                errorMessages.forEach(function (errorMessage) {
+                    errorMessage.innerHTML = ''; 
+            });
+
+            document.querySelector('form #submitionDescription').value = '';
+            
+        });
+    });
+
+</script>
+
+
+{% endblock %}

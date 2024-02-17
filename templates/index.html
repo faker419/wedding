@@ -1,0 +1,131 @@
+<html>
+  <head>
+      <title>Wedding Invitation</title>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <link rel="icon" type="image/x-icon" href="/static/img/icon.png" />
+      <!-- jQuery -->
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.min.css" />
+
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+      <link href="/static/fonts/castelar.ttf" rel="stylesheet" type="font/ttf" />
+      <link href="https://db.onlinewebfonts.com/c/c08371c87f795dab74967d3b78cd49a5?family=Garamond+Italic" rel="stylesheet">
+      <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js" crossorigin="anonymous"></script>
+      <link href="/static/css/styles.css" rel="stylesheet" />
+      <style>
+        @import url(https://db.onlinewebfonts.com/c/c08371c87f795dab74967d3b78cd49a5?family=Garamond+Italic);
+        body, html {
+              margin: 0;
+              padding: 0;
+              height: 100%;
+          }
+     </style>
+  </head>
+
+  <body>
+    <div id="video-container">
+      <video id="video" autoplay muted>
+        <source src="/static/img/rings_video.mp4" type="video/mp4">
+      </video>
+    </div>
+    
+    <div id="page-content">
+      <!-- Header / Home-->
+      <header class="w3-display-container w3-wide bgimg w3-grayscale-min landing-image" id="home">
+        <div class="w3-display-middle w3-text-white w3-center">
+          <h1 class="w3-jumbo title-color" style="font-family: 'castellar';">AHMAD <span class="w3-jumbo title-color" style="font-family: 'Garamond Italic';">&</span> MARYAM</h1>
+          <br>
+          <h2 class="title-color" style="font-family: 'castellar';">04 | 10 | 2020</h2>
+        </div>
+      </header>
+
+
+    
+
+      <div class="w3-display-container">
+        <img src="/static/img/rings9.png" class="w3-image" alt="rings video" style="width: 100%;">
+
+        <figure class="w3-display-middle w3-text-white w3-center">
+          <blockquote class="blockquote">
+            <p id="invition_text" class="font-lg-invitation" style="font-family: 'Garamond Italic'; text-shadow: 2px 2px 4px rgba(66, 65, 65, 0.5); color: rgba(255, 255, 255, 0.76);"></p>
+          </blockquote>
+        </figure>
+      </div>
+
+      {% block body %}
+      {% endblock %}
+
+
+      <!-- Wedding information -->
+      <div class="w3-container w3-padding-64 w3-pale-white w3-grayscale-min w3-center" id="wedding">
+        <div class="w3-content">
+          <div class="w3-row">
+            <div class="w3-half">
+              <p class="font-lg-tittle">Date</p>
+              <p class="lead font-lg-md font-lg-lg">Saturday 13th April 2024</p>
+              <p class="lead font-lg-md font-lg-lg">Ceremony starts at 8:30pm</p>
+            </div>
+
+            <div class="w3-half">
+              <p class="font-lg-tittle">Venue</p>
+              <p class="lead font-lg-md font-lg-lg">Calido Rooftop</p>
+              <p class="lead font-lg-md font-lg-lg">Tahir Guest Palace</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% block body2 %}
+      {% endblock %}
+
+
+
+      <footer class="footer text-black py-2">
+        <div class="container text-center">
+            <span class="text-muted">Powered By <strong>Issa Fares</strong></span>
+        </div>
+      </footer>
+
+      <div class="w3-hide-small" style="margin-bottom:32px"> </div>
+    </div>
+
+    
+    <script>
+      document.getElementById('video').addEventListener('ended', function() {
+        document.getElementById('video-container').style.display = 'none';
+      });
+
+      
+      $(document).ready(function() {
+        var video = document.getElementById('video');
+        var opacity = 1; // Initial opacity
+        var opacityStep = 0.005; // Opacity decrease step
+        var interval = setInterval(function() {
+            if (opacity > 0) {
+                opacity -= opacityStep;
+                if (opacity==0.99){
+                  document.getElementById('page-content').style.display = 'block';
+                }
+                video.style.opacity = opacity;
+            } else {
+              document.getElementById('video-container').style.display = 'none';
+              clearInterval(interval); // Stop decreasing opacity when it reaches 0      
+            }
+        }, 30); // Interval in milliseconds
+    });
+
+
+    </script>
+    {% block scripts %}
+    {% endblock %}
+
+  </body>
+
+
+</html>
