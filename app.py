@@ -13,7 +13,7 @@ from flask_socketio import SocketIO, emit
 import random
 
 
-
+'''
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode='gevent', cors_allowed_origins="*")
 app.config['JSON_SORT_KEYS'] = False
@@ -27,6 +27,36 @@ db = SQLAlchemy(app)
 STATIC_ROOT = 'static'
 TEMPLATES_ROOT = 'templates'
 IMG_ROOT =  os.path.join(STATIC_ROOT, "img")
+
+
+'''
+
+app = Flask(__name__)
+socketio = SocketIO(app, async_mode='gevent', cors_allowed_origins="*")
+app.config['JSON_SORT_KEYS'] = False
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    username="issafares",
+    password="arawaterpass",
+    hostname="issafares.mysql.pythonanywhere-services.com",
+    databasename="issafares$wedding",
+)
+app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['SECRET_KEY'] = 'ihsdtrh4545yh45645t3gfr'
+
+
+
+
+db = SQLAlchemy(app)
+
+
+BASE_DIR = '/home/issafares/wedding/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = '/static/'
+IMG_ROOT =  os.path.join(STATIC_ROOT, "img")
+
+
 
 
 class Couples(db.Model):
@@ -134,6 +164,8 @@ insertRecords()
 def index():
     return render_template('index.html')
 
+
+
 @app.route('/couples_invitation/<guest_id>/<identification>')
 def couples_invitation(guest_id, identification):
     if check_identification(guest_id, identification, 'couples'):
@@ -173,15 +205,6 @@ def coupeles_response():
         json_response = {'message' : 'message'}
         return jsonify(json_response) 
     
-def check_identification(guest_id, identification, guest_type):
-    if guest_type == 'couples':
-        couple = Couples.query.filter_by(id=guest_id, identification=identification).first()
-        return couple is not None
-    if guest_type == 'singles':
-        single = Singles.query.filter_by(id=guest_id, identification=identification).first()
-        return single is not None
-    return None
-
 
 
 @app.route('/singles_invitation/<guest_id>/<identification>')
@@ -223,17 +246,14 @@ def singles_response():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+def check_identification(guest_id, identification, guest_type):
+    if guest_type == 'couples':
+        couple = Couples.query.filter_by(id=guest_id, identification=identification).first()
+        return couple is not None
+    if guest_type == 'singles':
+        single = Singles.query.filter_by(id=guest_id, identification=identification).first()
+        return single is not None
+    return None
 
 
 
@@ -296,6 +316,8 @@ def attendance_data():
 
         json_response = {'data_response': list_of_dicts, 'pending':no_response,'attending':attending,'unable':unable}
         return jsonify(json_response) 
+
+
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
