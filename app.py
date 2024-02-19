@@ -166,13 +166,17 @@ def index():
 
 
 
-@app.route('/couples_invitation/<guest_id>/<identification>')
-def couples_invitation(guest_id, identification):
-    if check_identification(guest_id, identification, 'couples'):
+
+@app.route('/', subdomain='couples')
+def couples_invitation():
+    guest_id = request.args.get('id')
+    code = request.args.get('code')
+    # Validate guest_id and code
+    if check_identification(guest_id, code, 'couples'):
         return render_template('couple_invitations.html')
     else:
         return redirect(url_for('index'))
-    
+
 @app.route('/couples_data/<int:guest_id>', methods=['GET'])
 def get_couple_data(guest_id):
     couple = db.session.get(Couples, int(guest_id))
@@ -207,9 +211,12 @@ def coupeles_response():
     
 
 
-@app.route('/singles_invitation/<guest_id>/<identification>')
-def singles_invitation(guest_id, identification):
-    if check_identification(guest_id, identification, 'singles'):
+@app.route('/', subdomain='singles')
+def singles_invitation():
+    guest_id = request.args.get('id')
+    code = request.args.get('code')
+    # Validate guest_id and code
+    if check_identification(guest_id, code, 'singles'):
         return render_template('single_invitations.html')
     else:
         return redirect(url_for('index'))
