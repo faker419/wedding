@@ -12,7 +12,7 @@ import base64
 from flask_socketio import SocketIO, emit
 import random
 
-
+'''
 
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode='gevent', cors_allowed_origins="*")
@@ -56,7 +56,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 IMG_ROOT =  os.path.join(STATIC_ROOT, "img")
 
-'''
+
 
 
 class Couples(db.Model):

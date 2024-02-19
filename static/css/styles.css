@@ -20173,3 +20173,16 @@ p {line-height: 2}
       font-size: 2.5rem; /* Font size for medium-sized screens */
   }
 }
+
+@import url(https://db.onlinewebfonts.com/c/c08371c87f795dab74967d3b78cd49a5?family=Garamond+Italic);
+body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+}
+.landing-image {
+  background-image:  url(/static/img/marble3.png);
+  background-size: cover; /* Adjust the size of the background image */
+  background-repeat: no-repeat; /* Prevent the background image from repeating */
+  opacity: 0.8;
+}
