@@ -39,7 +39,7 @@
             </div>
         <div class="modal-footer">
             <button class="btn btn-light-soft text-light" type="button" data-bs-dismiss="modal">Close</button>
-            <button class="btn btn-yellow-soft text-yellow" type="button" onclick="submitForm()">Submit</button>
+            <button class="btn btn-yellow-soft text-yellow" type="button" data-bs-dismiss="modal" onclick="submitForm()">Submit</button>
         </div>
         </div>
     </div>
@@ -73,12 +73,13 @@
     let singlesData;
 
     function fillDetails() {
-        const pathname = window.location.pathname;
-        const segments = pathname.split('/');
-        const guestId = segments[2];
-        const url = `/singles_data/${guestId}`;
 
-        fetch(url, {
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestId = urlParams.get('id');;
+        const baseUrl = '/singles_data';
+        const urlWithParams = `${baseUrl}?id=${guestId}`;
+
+        fetch(urlWithParams, {
         method: 'GET'
         })
         .then(response => {
@@ -152,11 +153,6 @@
         })
         .then(response => {
             if (response.ok) {
-
-                const myModal = bootstrap.Modal.getOrCreateInstance('#submitionModal')
-                myModal.hide();
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
 
                 document.querySelector('form #submitionDescription').value = '';
                 

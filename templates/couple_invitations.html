@@ -38,7 +38,7 @@
             </div>
         <div class="modal-footer">
             <button class="btn btn-light-soft text-light" type="button" data-bs-dismiss="modal">Close</button>
-            <button class="btn btn-yellow-soft text-yellow" type="button" onclick="submitForm()">Submit</button>
+            <button class="btn btn-yellow-soft text-yellow" type="button" data-bs-dismiss="modal" onclick="submitForm()">Submit</button>
         </div>
         </div>
     </div>
@@ -67,12 +67,12 @@
     let coupleData;
 
     function fillDetails() {
-        const pathname = window.location.pathname;
-        const segments = pathname.split('/');
-        const guestId = segments[2];
-        const url = `/couples_data/${guestId}`;
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestId = urlParams.get('id');;
+        const baseUrl = '/couples_data';
+        const urlWithParams = `${baseUrl}?id=${guestId}`;
 
-        fetch(url, {
+        fetch(urlWithParams, {
         method: 'GET'
         })
         .then(response => {
@@ -157,12 +157,7 @@
         .then(response => {
             if (response.ok) {
 
-                const myModal = bootstrap.Modal.getOrCreateInstance('#submitionModal')
-                myModal.hide();
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-
-                document.querySelector('form #submitionDescription').value = '';
+                document.querySelector('form #submitionDescription').value = '';  
                 
             } else {
                 console.error('Failed to update responses');

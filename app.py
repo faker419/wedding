@@ -12,7 +12,7 @@ import base64
 from flask_socketio import SocketIO, emit
 import random
 
-'''
+
 
 app = Flask(__name__)
 socketio = SocketIO(app, async_mode='gevent', cors_allowed_origins="*")
@@ -56,7 +56,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 IMG_ROOT =  os.path.join(STATIC_ROOT, "img")
 
-
+'''
 
 
 class Couples(db.Model):
@@ -167,7 +167,7 @@ def index():
 
 
 
-@app.route('/', subdomain='couples')
+@app.route('/couples_invitation')
 def couples_invitation():
     guest_id = request.args.get('id')
     code = request.args.get('code')
@@ -177,10 +177,10 @@ def couples_invitation():
     else:
         return redirect(url_for('index'))
 
-@app.route('/couples_data/<int:guest_id>', methods=['GET'])
-def get_couple_data(guest_id):
+@app.route('/couples_data', methods=['GET'])
+def get_couple_data():
+    guest_id = request.args.get('id')
     couple = db.session.get(Couples, int(guest_id))
-    
     if couple:
         couple_data = couple.to_dict()
         couple_data['couple_id'] = guest_id
@@ -211,7 +211,7 @@ def coupeles_response():
     
 
 
-@app.route('/', subdomain='singles')
+@app.route('/singles_invitation')
 def singles_invitation():
     guest_id = request.args.get('id')
     code = request.args.get('code')
@@ -221,8 +221,9 @@ def singles_invitation():
     else:
         return redirect(url_for('index'))
     
-@app.route('/singles_data/<int:guest_id>', methods=['GET'])
-def get_single_data(guest_id):
+@app.route('/singles_data', methods=['GET'])
+def get_single_data():
+    guest_id = request.args.get('id')
     single = db.session.get(Singles, int(guest_id))
     
     if single:
