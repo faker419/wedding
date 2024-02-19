@@ -18,113 +18,166 @@
       <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js" crossorigin="anonymous"></script>
       <link href="/static/css/styles.css" rel="stylesheet" />
+      
       <style>
         @import url(https://db.onlinewebfonts.com/c/c08371c87f795dab74967d3b78cd49a5?family=Garamond+Italic);
         body, html {
               margin: 0;
               padding: 0;
               height: 100%;
-          }
+        }
+        .landing-image {
+          background-image:  url(/static/img/marble3.png);
+          background-size: cover; /* Adjust the size of the background image */
+          background-repeat: no-repeat; /* Prevent the background image from repeating */
+          opacity: 0.8;
+        }
+
+
+
+        .spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #dbae34;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        body.loaded .spinner {
+            display: none;
+        }
+        body.loaded .content {
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+
+        .content {
+            display: none;
+        }
      </style>
+
+
   </head>
 
   <body>
-    <div id="video-container">
-      <video id="video" autoplay muted>
-        <source src="/static/img/rings_video.mp4" type="video/mp4">
-      </video>
-    </div>
-    
-    <div id="page-content">
-      <!-- Header / Home-->
-      <header class="w3-display-container w3-wide bgimg w3-grayscale-min landing-image" id="home">
-        <div class="w3-display-middle w3-text-white w3-center">
-          <h1 class="w3-jumbo title-color" style="font-family: 'castellar';">AHMAD <span class="w3-jumbo title-color" style="font-family: 'Garamond Italic';">&</span> MARYAM</h1>
-          <br>
-          <h2 class="title-color" style="font-family: 'castellar';">13 | 04 | 2024</h2>
-        </div>
-      </header>
 
+    <div class="spinner"></div>
 
     
-
-      <div class="w3-display-container">
-        <img src="/static/img/rings9.png" class="w3-image" alt="rings video" style="width: 100%;">
-
-        <figure class="w3-display-middle w3-text-white w3-center">
-          <blockquote class="blockquote">
-            <p id="invition_text" class="font-lg-invitation" style="font-family: 'Garamond Italic'; text-shadow: 2px 2px 4px rgba(66, 65, 65, 0.5); color: rgba(255, 255, 255, 0.76);"></p>
-          </blockquote>
-        </figure>
+    <div class="content">
+      <div id="video-container">
+        <video id="video" autoplay muted>
+          <source src="/static/img/rings_video.mp4" type="video/mp4" loading="lazy">
+        </video>
       </div>
+      
+      <div id="page-content">
+        <!-- Header / Home-->
+        <header class="w3-display-container w3-wide bgimg w3-grayscale-min landing-image" id="home">
+          <div class="w3-display-middle w3-text-white w3-center">
+            <h1 class="w3-jumbo title-color" style="font-family: 'castellar';">AHMAD <span class="w3-jumbo title-color" style="font-family: 'Garamond Italic';">&</span> MARYAM</h1>
+            <br>
+            <h2 class="title-color" style="font-family: 'castellar';">13 | 04 | 2024</h2>
+          </div>
+        </header>
 
-      {% block body %}
-      {% endblock %}
+
+      
+
+        <div class="w3-display-container">
+          <img src="/static/img/rings9.png" class="w3-image" alt="rings video" style="width: 100%;">
+
+          <figure class="w3-display-middle w3-text-white w3-center">
+            <blockquote class="blockquote">
+              <p id="invition_text" class="font-lg-invitation" style="font-family: 'Garamond Italic'; text-shadow: 2px 2px 4px rgba(66, 65, 65, 0.5); color: rgba(255, 255, 255, 0.76);"></p>
+            </blockquote>
+          </figure>
+        </div>
+
+        {% block body %}
+        {% endblock %}
 
 
-      <!-- Wedding information -->
-      <div class="w3-container w3-padding-64 w3-pale-white w3-grayscale-min w3-center" id="wedding">
-        <div class="w3-content">
-          <div class="w3-row">
-            <div class="w3-half">
-              <p class="font-lg-tittle">Date</p>
-              <p class="lead font-lg-md font-lg-lg">Saturday 13th April 2024</p>
-              <p class="lead font-lg-md font-lg-lg">Ceremony starts at 8:30pm</p>
-            </div>
+        <!-- Wedding information -->
+        <div class="w3-container w3-padding-64 w3-pale-white w3-grayscale-min w3-center" id="wedding">
+          <div class="w3-content">
+            <div class="w3-row">
+              <div class="w3-half">
+                <p class="font-lg-tittle">Date</p>
+                <p class="lead font-lg-md font-lg-lg">Saturday 13th April 2024</p>
+                <p class="lead font-lg-md font-lg-lg">Ceremony starts at 8:30pm</p>
+              </div>
 
-            <div class="w3-half">
-              <p class="font-lg-tittle">Venue</p>
-              <p class="lead font-lg-md font-lg-lg">Calido Rooftop</p>
-              <p class="lead font-lg-md font-lg-lg">Tahir Guest Palace</p>
+              <div class="w3-half">
+                <p class="font-lg-tittle">Venue</p>
+                <p class="lead font-lg-md font-lg-lg">Calido Rooftop</p>
+                <p class="lead font-lg-md font-lg-lg">Tahir Guest Palace</p>
+              </div>
             </div>
           </div>
         </div>
+
+        {% block body2 %}
+        {% endblock %}
+
+
+
+        <footer class="footer text-black py-2">
+          <div class="container text-center">
+              <span class="text-muted">Powered By <strong>Issa Fares</strong></span>
+          </div>
+        </footer>
+
+        <div class="w3-hide-small" style="margin-bottom:32px"> </div>
       </div>
 
-      {% block body2 %}
-      {% endblock %}
-
-
-
-      <footer class="footer text-black py-2">
-        <div class="container text-center">
-            <span class="text-muted">Powered By <strong>Issa Fares</strong></span>
-        </div>
-      </footer>
-
-      <div class="w3-hide-small" style="margin-bottom:32px"> </div>
-    </div>
-
-    
-    <script>
-      document.getElementById('video').addEventListener('ended', function() {
-        document.getElementById('video-container').style.display = 'none';
-      });
-
       
-      $(document).ready(function() {
-        var video = document.getElementById('video');
-        var opacity = 1; // Initial opacity
-        var opacityStep = 0.005; // Opacity decrease step
-        var interval = setInterval(function() {
-            if (opacity > 0) {
-                opacity -= opacityStep;
-                if (opacity==0.99){
-                  document.getElementById('page-content').style.display = 'block';
-                }
-                video.style.opacity = opacity;
-            } else {
-              document.getElementById('video-container').style.display = 'none';
-              clearInterval(interval); // Stop decreasing opacity when it reaches 0      
-            }
-        }, 30); // Interval in milliseconds
-    });
+      <script>
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+            playVideo();
+        });
 
 
-    </script>
-    {% block scripts %}
-    {% endblock %}
+        document.getElementById('video').addEventListener('ended', function() {
+          document.getElementById('video-container').style.display = 'none';
+        });
 
+        
+        function playVideo() {
+          var video = document.getElementById('video');
+          var opacity = 1; // Initial opacity
+          var opacityStep = 0.005; // Opacity decrease step
+          var interval = setInterval(function() {
+              if (opacity > 0) {
+                  opacity -= opacityStep;
+                  if (opacity==0.99){
+                    document.getElementById('page-content').style.display = 'block';
+                  }
+                  video.style.opacity = opacity;
+              } else {
+                document.getElementById('video-container').style.display = 'none';
+                clearInterval(interval); // Stop decreasing opacity when it reaches 0      
+              }
+          }, 30); // Interval in milliseconds
+      };
+
+
+      </script>
+      {% block scripts %}
+      {% endblock %}
+    </div>
   </body>
 
 

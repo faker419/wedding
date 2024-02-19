@@ -20007,12 +20007,6 @@ p {line-height: 2}
   }
 
 
-  .landing-image {
-    background-image:  url(/static/img/marble3.png);
-    background-size: cover; /* Adjust the size of the background image */
-    background-repeat: no-repeat; /* Prevent the background image from repeating */
-    opacity: 0.8;
-  }
 
   .title-color {
     color: rgba(12,22,43,1); /* White text */
