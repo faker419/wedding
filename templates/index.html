@@ -32,24 +32,12 @@
           font-size: 18px;
         }
 
-        body.loaded .spinner {
-            display: none;
-        }
-        body.loaded .loading-text {
-            display: none;
-        }
-        body.loaded .content {
-            display: block;
-        }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-
-        .content {
-            display: none;
+        .content{
+          display:none;
         }
      </style>
       <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -67,7 +55,7 @@
       
   </head>
 
-  <body class="loaded">
+  <body></body>
     
 
     <div class="spinner"></div>
@@ -77,7 +65,7 @@
     <div class="content">
       <div id="video-container">
         <video id="video" autoplay muted>
-          <source src="/static/img/rings_video.mp4" type="video/mp4" loading="lazy">
+          <source src="/static/img/rings_video.mp4" type="video/mp4">
         </video>
       </div>
       
@@ -144,10 +132,14 @@
       
       <script>
         window.addEventListener('load', function() {
-            document.body.classList.add('loaded');
-            playVideo();
+          document.querySelector(".loading-text").style.display = "none";
+          document.querySelector(".spinner").style.display = "none";
+          playVideo();
+          document.querySelector(".content").style.display = "block";
+          
         });
 
+        
 
         document.getElementById('video').addEventListener('ended', function() {
           document.getElementById('video-container').style.display = 'none';
