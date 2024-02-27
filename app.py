@@ -161,9 +161,10 @@ insertRecords()
 
 @socketio.on('connect')
 def handle_connect():
-    # Determine which room to join based on the page
     room = '/attendance'
     join_room(room)
+    print("Client Issa connected to the server.")
+
 
 
 
