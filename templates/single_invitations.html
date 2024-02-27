@@ -70,7 +70,7 @@
 
 <script>
 
-    let singlesData;
+    var singlesData = {};
 
     function fillDetails() {
 
@@ -88,22 +88,22 @@
             }
             return response.json();
         })
-        .then(data => {
-            singlesData = data; 
+        .then(guest_data => {
+            singlesData = guest_data; 
 
             const singlesList = document.getElementById('singlesList');
             singlesList.innerHTML = '';
             var innerList = '';
 
-            const isChecked = singlesData.response ? 'checked' : '';
+            const isChecked = guest_data.response ? 'checked' : '';
 
-            document.getElementById('invition_text').innerHTML = `<b>Dear ${singlesData.prefix} ${singlesData.family_name} we forward to you this invitation.</b>`
+            document.getElementById('invition_text').innerHTML = `<b>Dear ${guest_data.prefix} ${guest_data.family_name} we forward to you this invitation.</b>`
             
 
             innerList +=
             `<tr class="border-bottom">
                 <td>
-                    <div class="fw-bold" id="name">${singlesData.name} ${singlesData.family_name}</div>
+                    <div class="fw-bold" id="name">${guest_data.name} ${guest_data.family_name}</div>
                 </td>
                 <td class="text-end fw-bold">
                     <input class="form-check-input" name="checkbox_singles" id="checkbox_singles" type="checkbox" value="" ${isChecked}/>
