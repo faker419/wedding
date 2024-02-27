@@ -80,7 +80,10 @@
         const urlWithParams = `${baseUrl}?id=${guestId}`;
 
         fetch(urlWithParams, {
-        method: 'GET'
+        method: 'GET',
+        headers : {
+                'Content-Type' : 'application/json;charset=utf-8'
+            },
         })
         .then(response => {
             if (!response.ok) {
