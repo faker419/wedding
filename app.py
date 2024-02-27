@@ -225,7 +225,7 @@ def singles_invitation():
 def get_single_data():
     try:
         guest_id = request.args.get('id')
-        single = db.session.get(Singles, int(guest_id))
+        single = Singles.query.get(int(guest_id)) 
         
         if single:
             single_data = single.to_dict()
