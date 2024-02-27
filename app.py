@@ -47,7 +47,6 @@ app.config['SECRET_KEY'] = 'ihsdtrh4545yh45645t3gfr'
 
 
 
-
 db = SQLAlchemy(app)
 
 
@@ -55,6 +54,7 @@ BASE_DIR = '/home/issafares/wedding/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 IMG_ROOT =  os.path.join(STATIC_ROOT, "img")
+
 
 
 
