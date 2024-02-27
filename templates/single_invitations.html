@@ -78,13 +78,12 @@
         const guestId = urlParams.get('id');;
         const baseUrl = '/singles_data';
         const urlWithParams = `${baseUrl}?id=${guestId}`;
-        console.log(urlWithParams)
 
         fetch(urlWithParams, {
         method: 'GET',
         headers : {
-                'Content-Type' : 'application/json;charset=utf-8'
-            },
+            'Content-Type' : 'application/json;charset=utf-8'
+        }
         })
         .then(response => {
             if (!response.ok) {

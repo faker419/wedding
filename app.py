@@ -9,7 +9,7 @@ from sqlalchemy import func, text, column, desc, asc, delete, cast, or_, and_,se
 from sqlalchemy.orm import aliased, joinedload
 from sqlalchemy.exc import SQLAlchemyError
 import base64
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit,join_room
 import random
 
 '''
@@ -156,14 +156,22 @@ def insertRecords():
             db.session.add_all(singles_imports)
             db.session.commit()
 
-
 insertRecords()
+
+
+@socketio.on('connect')
+def handle_connect():
+    # Determine which room to join based on the page
+    room = '/attendance'
+    join_room(room)
+
+
+
 
 @app.route('/')
 @app.route('/home')
 def index():
     return render_template('index.html')
-
 
 
 
@@ -180,7 +188,7 @@ def couples_invitation():
 @app.route('/couples_data', methods=['GET'])
 def get_couple_data():
     guest_id = request.args.get('id')
-    couple = db.session.get(Couples, int(guest_id))
+    couple = db.session.query(Couples).filter(Couples.id == int(guest_id)).first()
     if couple:
         couple_data = couple.to_dict()
         couple_data['couple_id'] = guest_id
@@ -197,14 +205,15 @@ def coupeles_response():
         couple_id = jsonData['couple_id']
         comment = jsonData['comment']
 
-        couple = db.session.get(Couples, int(couple_id))
+        couple = db.session.query(Couples).filter(Couples.id == int(couple_id)).first()
         setattr(couple,'male_response',male_response)
         setattr(couple,'female_response',female_response)
         setattr(couple,'comment',comment)
         setattr(couple,'is_answered',True)
         db.session.commit()
 
-        socketio.emit('couples_attendance_table')
+        room = '/attendance'
+        socketio.emit('couples_attendance_table', room=room)
 
         json_response = {'message' : 'message'}
         return jsonify(json_response) 
@@ -215,7 +224,7 @@ def coupeles_response():
 def singles_invitation():
     guest_id = request.args.get('id')
     code = request.args.get('code')
-    # Validate guest_id and code
+
     if check_identification(guest_id, code, 'singles'):
         return render_template('single_invitations.html')
     else:
@@ -234,7 +243,7 @@ def get_single_data():
         else:
             return jsonify({'error': 'Individual not found'}), 404
     except Exception as e:
-        # Log the error
+
         print(f"The singles error: {str(e)}")
     
 @app.route('/api/update_responses_singles', methods=["POST" , "GET"])
@@ -245,13 +254,14 @@ def singles_response():
         single_id = jsonData['single_id']
         comment = jsonData['comment']
 
-        single = db.session.get(Singles, int(single_id))
+        single = db.session.query(Singles).filter(Singles.id == int(single_id)).first()
         setattr(single,'response',response)
         setattr(single,'comment',comment)
         setattr(single,'is_answered',True)
         db.session.commit()
 
-        socketio.emit('singles_attendance_table')
+        room = '/attendance'
+        socketio.emit('singles_attendance_table', room=room)
 
         json_response = {'message' : 'message'}
         return jsonify(json_response)

@@ -64,7 +64,7 @@
 
 <script>
 
-    let coupleData;
+    var coupleData = {};
 
     function fillDetails() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -73,7 +73,10 @@
         const urlWithParams = `${baseUrl}?id=${guestId}`;
 
         fetch(urlWithParams, {
-        method: 'GET'
+        method: 'GET',
+        headers : {
+            'Content-Type' : 'application/json;charset=utf-8'
+        }
         })
         .then(response => {
             if (!response.ok) {
@@ -81,23 +84,23 @@
             }
             return response.json();
         })
-        .then(data => {
-            coupleData = data; 
+        .then(guest_data => {
+            coupleData = guest_data; 
 
             const couplesList = document.getElementById('couplesList');
             couplesList.innerHTML = '';
             var innerList = '';
 
-            const isCheckedMale = coupleData.male_response ? 'checked' : '';
-            const isCheckedFemale = coupleData.female_response ? 'checked' : '';
+            const isCheckedMale = guest_data.male_response ? 'checked' : '';
+            const isCheckedFemale = guest_data.female_response ? 'checked' : '';
 
-            document.getElementById('invition_text').innerHTML = `<b>Dear Mr and Mrs ${coupleData.family_name} we forward to you this invitation.</b>`
+            document.getElementById('invition_text').innerHTML = `<b>Dear Mr and Mrs ${guest_data.family_name} we forward to you this invitation.</b>`
             
 
             innerList +=
             `<tr class="border-bottom">
                 <td>
-                    <div class="fw-bold" id="name_male">${coupleData.male_name} ${coupleData.family_name}</div>
+                    <div class="fw-bold" id="name_male">${guest_data.male_name} ${guest_data.family_name}</div>
                 </td>
                 <td class="text-end fw-bold">
                     <input class="form-check-input" name="checkbox_male" id="checkbox_male" type="checkbox" value="" ${isCheckedMale}/>
@@ -105,7 +108,7 @@
             </tr>
             <tr class="border-bottom">
                 <td>
-                    <div class="fw-bold" id="name_female">${coupleData.female_name} ${coupleData.family_name}</div>
+                    <div class="fw-bold" id="name_female">${guest_data.female_name} ${guest_data.family_name}</div>
                 </td>
                 <td class="text-end fw-bold">
                     <input class="form-check-input" name="checkbox_female" id="checkbox_female" type="checkbox" value="" ${isCheckedFemale}/>
