@@ -78,6 +78,7 @@
         const guestId = urlParams.get('id');;
         const baseUrl = '/singles_data';
         const urlWithParams = `${baseUrl}?id=${guestId}`;
+        console.log(urlParams)
 
         fetch(urlWithParams, {
         method: 'GET',

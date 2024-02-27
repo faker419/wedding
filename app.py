@@ -223,15 +223,19 @@ def singles_invitation():
     
 @app.route('/singles_data', methods=['GET'])
 def get_single_data():
-    guest_id = request.args.get('id')
-    single = db.session.get(Singles, int(guest_id))
-    
-    if single:
-        single_data = single.to_dict()
-        single_data['single_id'] = guest_id
-        return jsonify(single_data)
-    else:
-        return jsonify({'error': 'Individual not found'}), 404
+    try:
+        guest_id = request.args.get('id')
+        single = db.session.get(Singles, int(guest_id))
+        
+        if single:
+            single_data = single.to_dict()
+            single_data['single_id'] = guest_id
+            return jsonify(single_data)
+        else:
+            return jsonify({'error': 'Individual not found'}), 404
+    except Exception as e:
+        # Log the error
+        print(f"The singles error: {str(e)}")
     
 @app.route('/api/update_responses_singles', methods=["POST" , "GET"])
 def singles_response():
