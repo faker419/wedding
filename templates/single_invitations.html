@@ -158,6 +158,11 @@
             if (response.ok) {
 
                 document.querySelector('form #submitionDescription').value = '';
+
+                var socket = io.connect('https://www.ahmadandmaryam.com');
+                var argument = "singles"; 
+                socket.emit('trigger_attendance', {'argument': argument});
+
                 
             } else {
                 console.error('Failed to update responses');

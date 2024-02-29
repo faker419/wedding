@@ -160,7 +160,10 @@ insertRecords()
 
 
 
-
+@socketio.on('trigger_attendance')
+def trigger_attendance(data):
+    argument = data['argument']
+    socketio.emit('attendance', argument, namespace='/attendance')
 
 
 
@@ -208,8 +211,6 @@ def coupeles_response():
         setattr(couple,'is_answered',True)
         db.session.commit()
 
-        # socketio.emit('couples_attendance_table', room=room)
-        socketio.emit('attendance','couples')
 
         json_response = {'message' : 'message'}
         return jsonify(json_response) 
@@ -255,9 +256,6 @@ def singles_response():
         setattr(single,'comment',comment)
         setattr(single,'is_answered',True)
         db.session.commit()
-
-        # socketio.emit('singles_attendance_table', room=room)
-        socketio.emit('attendance','singles')
         
 
         json_response = {'message' : 'message'}

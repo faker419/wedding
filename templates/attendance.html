@@ -132,19 +132,16 @@
 
 <script>
 
-const socket = io();
+$(document).ready(function(){
 
-socket.connect('https://www.ahmadandmaryam.com/attendance');
-socket.on('connect',function(){
-    socket.send('connected')
+    var socket = io.connect('https://www.ahmadandmaryam.com/attendance');
+
+    socket.on('attendance', function(argument){
+        if (document.querySelector('form #formGuestType').value == argument){
+            updateAttendanceTable();
+        }
+    });
 });
-
-socket.on('attendance',function(keyword){
-    if (document.querySelector('form #formGuestType').value == keyword){
-        updateAttendanceTable();
-    }
-});
-
 
 
 
@@ -173,6 +170,8 @@ $(document).ready(function () {
     ],
     "lengthMenu": [[-1], ["All"]]
     });
+
+    updateAttendanceTable();
 });
 
 var dataTableSales;
