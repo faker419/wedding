@@ -1,0 +1,2 @@
+http://127.0.0.1:5000/couples_invitation?id=1&code=526433
+http://127.0.0.1:5000/singles_invitation?id=46&code=995365
