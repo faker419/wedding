@@ -278,7 +278,7 @@ def attendance_data():
         attending = 0
         unable = 0
         if guest_type == 'couples':
-            couples = db,session.query(Couples).all()
+            couples = db.session.query(Couples).all()
             for couple in couples:
                 if not couple.is_answered:
                     no_response += 2 
@@ -303,7 +303,7 @@ def attendance_data():
                 list_of_dicts.append(dic1)
                 list_of_dicts.append(dic2)
         else:
-            singles = Singles.query.all()
+            singles = db.session.query(Singles).all()
             for single in singles:
                 if not single.is_answered:
                     no_response += 1

@@ -167,43 +167,47 @@ $(document).ready(function () {
 var dataTableSales;
 
 function updateAttendanceTable() {
-        if (selectedType == 'couples'){
-            document.getElementById('tableTittle').innerHTML = 'Couples List';
-        }else{
-            document.getElementById('tableTittle').innerHTML = 'Singles List';
-        }
+    var selectedType = document.querySelector('form #formGuestType').value;
+    
+    if (selectedType == 'couples') {
+        document.getElementById('tableTittle').innerHTML = 'Couples List';
+    } else {
+        document.getElementById('tableTittle').innerHTML = 'Singles List';
+    }
 
-        let tableform = new FormData();
-        var selectedType = document.querySelector('form #formGuestType').value;
-        tableform.type = selectedType;
+    let tableform = {
+        type: selectedType
+    };
 
-        fetch('/api/attendance', {
-            headers : {
-                'Content-Type' : 'application/json;charset=utf-8'
-            },
-            method : 'POST', 
-            body : JSON.stringify(tableform),
-        })
-        .then(function (response){
-        if(response.ok) {
+    fetch('/api/attendance', {
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        method: 'POST',
+        body: JSON.stringify(tableform),
+    })
+    .then(function(response) {
+        if (response.ok) {
             response.json()
             .then(function(response) {
-                    dataTableSales = $('#attendanceTable').DataTable();
-                    dataTableSales.clear();
-                    dataTableSales.rows.add(response.data_response);
-                    dataTableSales.columns.adjust().draw();
-                    feather.replace()
+                dataTableSales = $('#attendanceTable').DataTable();
+                dataTableSales.clear();
+                dataTableSales.rows.add(response.data_response);
+                dataTableSales.columns.adjust().draw();
+                feather.replace();
 
-                    document.getElementById('pending').innerHTML = response.pending;
-                    document.getElementById('attending').innerHTML = response.attending;
-                    document.getElementById('unable').innerHTML = response.unable;
+                document.getElementById('pending').innerHTML = response.pending;
+                document.getElementById('attending').innerHTML = response.attending;
+                document.getElementById('unable').innerHTML = response.unable;
             });
-        }
-        else {
+        } else {
             throw Error('Something went wrong');
         }
     })
-};
+    .catch(function(error) {
+        console.error('Error:', error);
+    });
+}
 
 
 
