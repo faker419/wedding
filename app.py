@@ -278,7 +278,7 @@ def attendance_data():
         attending = 0
         unable = 0
         if guest_type == 'couples':
-            couples = Couples.query.all()
+            couples = db,session.query(Couples).all()
             for couple in couples:
                 if not couple.is_answered:
                     no_response += 2 
