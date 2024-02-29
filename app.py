@@ -159,11 +159,6 @@ def insertRecords():
 insertRecords()
 
 
-@socketio.on('connect')
-def handle_connect():
-    room = '/attendance'
-    join_room(room)
-    print("Client Issa connected to the server.")
 
 
 
@@ -213,8 +208,8 @@ def coupeles_response():
         setattr(couple,'is_answered',True)
         db.session.commit()
 
-        room = '/attendance'
-        socketio.emit('couples_attendance_table', room=room)
+        # socketio.emit('couples_attendance_table', room=room)
+        socketio.emit('attendance','couples')
 
         json_response = {'message' : 'message'}
         return jsonify(json_response) 
@@ -261,8 +256,9 @@ def singles_response():
         setattr(single,'is_answered',True)
         db.session.commit()
 
-        room = '/attendance'
-        socketio.emit('singles_attendance_table', room=room)
+        # socketio.emit('singles_attendance_table', room=room)
+        socketio.emit('attendance','singles')
+        
 
         json_response = {'message' : 'message'}
         return jsonify(json_response)
