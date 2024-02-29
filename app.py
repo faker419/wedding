@@ -1,6 +1,3 @@
-from gevent import monkey
-from gevent.pywsgi import WSGIServer
-monkey.patch_all()
 import os
 from collections import defaultdict, OrderedDict
 from flask import Flask, render_template, json, jsonify, request, session, redirect, abort, Response, url_for, flash, g, redirect, send_from_directory, make_response
@@ -9,13 +6,11 @@ from sqlalchemy import func, text, column, desc, asc, delete, cast, or_, and_,se
 from sqlalchemy.orm import aliased, joinedload
 from sqlalchemy.exc import SQLAlchemyError
 import base64
-from flask_socketio import SocketIO, emit,join_room
 import random
 
 '''
 
 app = Flask(__name__)
-socketio = SocketIO(app, async_mode='gevent', cors_allowed_origins="*")
 app.config['JSON_SORT_KEYS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/wedding'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -32,7 +27,6 @@ IMG_ROOT =  os.path.join(STATIC_ROOT, "img")
 '''
 
 app = Flask(__name__)
-socketio = SocketIO(app, async_mode='gevent', cors_allowed_origins="*")
 app.config['JSON_SORT_KEYS'] = False
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
     username="issafares",
@@ -158,12 +152,6 @@ def insertRecords():
 
 insertRecords()
 
-
-
-@socketio.on('trigger_attendance')
-def trigger_attendance(data):
-    argument = data['argument']
-    socketio.emit('attendance', argument, namespace='/attendance')
 
 
 
@@ -337,5 +325,5 @@ def attendance_data():
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+   app.run(debug=True)
 
