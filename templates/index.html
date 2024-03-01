@@ -22,12 +22,7 @@
   
       <style>
 
-        .landing-image {
-          background-image:  url("/static/img/marble.png");
-          background-size: cover; /* Adjust the size of the background image */
-          background-repeat: no-repeat; /* Prevent the background image from repeating */
-          opacity: 0.8;
-        }
+
   
         .spinner-container {
             position: fixed;
@@ -75,7 +70,7 @@
     
     <div class="content">
       <div id="video-container">
-        <video id="video"  muted playsinline preload="metadata" controls>
+        <video id="video"  muted playsinline> 
           <source src="https://github.com/faker419/wedding/blob/main/static/img/rings_video.mp4?raw=true" type="video/mp4">
         </video>
       </div>
@@ -146,7 +141,7 @@
         window.addEventListener('load', function() {
           document.querySelector(".spinner-container").style.display = "none";
           document.querySelector(".content").style.display = "block"; 
-          checkImageLoad();
+          playVideo();
         });
 
         
@@ -155,15 +150,7 @@
         });
 
         
-        function checkImageLoad() {
-          var landingImage = document.querySelector(".landing-image");
-          var interval = setInterval(function() {
-              if (landingImage.complete && landingImage.naturalWidth !== 0 && landingImage.naturalHeight !== 0) {
-                  clearInterval(interval);
-                  playVideo();
-              }
-          }, 100); // Check every 100 milliseconds
-      }
+
 
 
       function playVideo() {
