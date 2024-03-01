@@ -75,8 +75,8 @@
     
     <div class="content">
       <div id="video-container">
-        <video id="video"  muted playsinline preload="auto" controls>
-          <source src="/static/img/rings_video.mp4" type="video/mp4">
+        <video id="video"  muted playsinline preload="metadata" controls>
+          <source src="https://github.com/faker419/wedding/blob/main/static/img/rings_video.mp4?raw=true" type="video/mp4">
         </video>
       </div>
       
@@ -168,31 +168,23 @@
 
       function playVideo() {
 
-        var video = document.getElementById('video');
-        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+          var video = document.getElementById('video');
 
-        if (isSafari) {
-            video.addEventListener('click', function() {
-                this.play();
-            });
-        } else {
-            video.play();
-        }
-
-        var opacity = 1; // Initial opacity
-        var opacityStep = 0.005; // Opacity decrease step
-        var interval = setInterval(function() {
-            if (opacity > 0) {
-                opacity -= opacityStep;
-                if (opacity == 0.99) {
-                    document.getElementById('page-content').style.display = 'block';
-                }
-                video.style.opacity = opacity;
-            } else {
-                document.getElementById('video-container').style.display = 'none';
-                clearInterval(interval); // Stop decreasing opacity when it reaches 0      
-            }
-        }, 30); // Interval in milliseconds
+          var opacity = 1; // Initial opacity
+          var opacityStep = 0.005; // Opacity decrease step
+          var interval = setInterval(function() {
+              if (opacity > 0) {
+                  opacity -= opacityStep;
+                  if (opacity == 0.99) {
+                      document.getElementById('page-content').style.display = 'block';
+                  }
+                  video.style.opacity = opacity;
+              } else {
+                  document.getElementById('video-container').style.display = 'none';
+                  clearInterval(interval); // Stop decreasing opacity when it reaches 0      
+              }
+          }, 30); // Interval in milliseconds
+          video.play(); // Start playing the video
 
       };
 
