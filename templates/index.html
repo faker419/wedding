@@ -145,8 +145,7 @@
 
         window.addEventListener('load', function() {
           document.querySelector(".spinner-container").style.display = "none";
-          document.querySelector(".content").style.display = "block";
-          playVideo();  
+          document.querySelector(".content").style.display = "block"; 
           checkImageLoad();
         });
 
@@ -170,6 +169,15 @@
       function playVideo() {
 
         var video = document.getElementById('video');
+        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+        if (isSafari) {
+            video.addEventListener('click', function() {
+                this.play();
+            });
+        } else {
+            video.play();
+        }
 
         var opacity = 1; // Initial opacity
         var opacityStep = 0.005; // Opacity decrease step
@@ -185,7 +193,7 @@
                 clearInterval(interval); // Stop decreasing opacity when it reaches 0      
             }
         }, 30); // Interval in milliseconds
-        video.play(); // Start playing the video
+
       };
 
 
