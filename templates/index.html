@@ -78,7 +78,6 @@
         <video id="video"  muted playsinline preload="metadata">
           <source src="/static/img/rings_video.mp4" type="video/mp4">
         </video>
-        <img  id="img_video"  preload="metadata" playsinline muted src="/static/img/rings_video.mp4" >
       </div>
       
       <div id="page-content">
@@ -160,7 +159,7 @@
         function checkImageLoad() {
           var landingImage = document.querySelector(".landing-image");
           var interval = setInterval(function() {
-              if (landingImage.complete) {
+              if (landingImage.complete && landingImage.naturalWidth !== 0 && landingImage.naturalHeight !== 0) {
                   clearInterval(interval);
                   playVideo();
               }
@@ -170,20 +169,7 @@
 
       function playVideo() {
 
-        var video;
-
-        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-        if (isSafari) {
-          console.log('is safari')
-          document.getElementById("video").style.display = "none";
-          video = document.getElementById('img_video');
-        } else {
-          document.getElementById("img_video").style.display = "none";
-          video = document.getElementById('video');
-          console.log('is windows')
-        }
-
-        
+        var video = document.getElementById('video');
 
         var opacity = 1; // Initial opacity
         var opacityStep = 0.005; // Opacity decrease step
