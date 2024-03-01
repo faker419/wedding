@@ -20180,9 +20180,5 @@ body, html {
       padding: 0;
       height: 100%;
 }
-.landing-image {
-  background-image:  url(/static/img/marble.png);
-  background-size: cover; /* Adjust the size of the background image */
-  background-repeat: no-repeat; /* Prevent the background image from repeating */
-  opacity: 0.8;
-}
+
+

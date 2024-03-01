@@ -6,39 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       <link rel="icon" type="image/x-icon" href="/static/img/icon.png" />
       <!-- jQuery -->
-      <style>
 
-      .spinner-container {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          text-align: center;
-      }
-
-      .spinner {
-          border: 16px solid #b3b3b3;
-          border-top: 16px solid #dbae34;
-          border-radius: 50%;
-          width: 120px;
-          height: 120px;
-          animation: spin 2s linear infinite;
-          margin: auto;
-      }
-
-      .loading-text {
-          font-size: 18px;
-          color: #dbae34;
-      }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .content{
-          display:none;
-        }
-     </style>
       <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha3/js/bootstrap.bundle.min.js"></script>
@@ -52,6 +20,47 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js" crossorigin="anonymous"></script>
       <link href="/static/css/styles.css" rel="stylesheet" />
   
+      <style>
+
+        .landing-image {
+          background-image:  url("/static/img/marble.png");
+          background-size: cover; /* Adjust the size of the background image */
+          background-repeat: no-repeat; /* Prevent the background image from repeating */
+          opacity: 0.8;
+        }
+  
+        .spinner-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+  
+        .spinner {
+            border: 16px solid #b3b3b3;
+            border-top: 16px solid #dbae34;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            margin: auto;
+        }
+  
+        .loading-text {
+            font-size: 18px;
+            color: #dbae34;
+        }
+  
+          @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+          }
+          .content{
+            display:none;
+          }
+  
+      </style>
       
   </head>
 
@@ -66,9 +75,10 @@
     
     <div class="content">
       <div id="video-container">
-        <video id="video" autoplay muted playsinline>
+        <video id="video"  muted playsinline preload="metadata">
           <source src="/static/img/rings_video.mp4" type="video/mp4">
         </video>
+        <img  id="img_video"  preload="metadata" playsinline muted src="/static/img/rings_video.mp4" >
       </div>
       
       <div id="page-content">
@@ -133,36 +143,63 @@
 
       
       <script>
+
         window.addEventListener('load', function() {
           document.querySelector(".spinner-container").style.display = "none";
-          playVideo();
           document.querySelector(".content").style.display = "block";
-          
+          playVideo();  
+          checkImageLoad();
         });
 
         
-
         document.getElementById('video').addEventListener('ended', function() {
           document.getElementById('video-container').style.display = 'none';
         });
 
         
-        function playVideo() {
-          var video = document.getElementById('video');
-          var opacity = 1; // Initial opacity
-          var opacityStep = 0.005; // Opacity decrease step
+        function checkImageLoad() {
+          var landingImage = document.querySelector(".landing-image");
           var interval = setInterval(function() {
-              if (opacity > 0) {
-                  opacity -= opacityStep;
-                  if (opacity==0.99){
+              if (landingImage.complete) {
+                  clearInterval(interval);
+                  playVideo();
+              }
+          }, 100); // Check every 100 milliseconds
+      }
+
+
+      function playVideo() {
+
+        var video;
+
+        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        if (isSafari) {
+          console.log('is safari')
+          document.getElementById("video").style.display = "none";
+          video = document.getElementById('img_video');
+        } else {
+          document.getElementById("img_video").style.display = "none";
+          video = document.getElementById('video');
+          console.log('is windows')
+        }
+
+        
+
+        var opacity = 1; // Initial opacity
+        var opacityStep = 0.005; // Opacity decrease step
+        var interval = setInterval(function() {
+            if (opacity > 0) {
+                opacity -= opacityStep;
+                if (opacity == 0.99) {
                     document.getElementById('page-content').style.display = 'block';
-                  }
-                  video.style.opacity = opacity;
-              } else {
+                }
+                video.style.opacity = opacity;
+            } else {
                 document.getElementById('video-container').style.display = 'none';
                 clearInterval(interval); // Stop decreasing opacity when it reaches 0      
-              }
-          }, 30); // Interval in milliseconds
+            }
+        }, 30); // Interval in milliseconds
+        video.play(); // Start playing the video
       };
 
 
