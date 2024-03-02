@@ -71,9 +71,8 @@
     
     <div class="content" style="display: none;">
       <div id="video-container">
-        <video id="video"  muted playsinline> 
-          <source src="https://github.com/faker419/wedding/blob/main/static/img/rings_video.mp4?raw=true" type="video/mp4">
-        </video>
+        <video id="video"  playsinline muted src="https://github.com/faker419/wedding/blob/main/static/img/rings_video.mp4?raw=true" type="video/mp4"> </video>
+        <img id="img_video"  playsinline muted src="https://github.com/faker419/wedding/blob/main/static/img/rings_video.mp4?raw=true" alt="Poster image for the video">
       </div>
       
       <div id="page-content">
@@ -156,7 +155,18 @@
 
       function playVideo() {
 
-          var video = document.getElementById('video');
+        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        var video;
+    
+        if (isSafari) {
+          document.getElementById("video").style.display = "none";
+          video = document.getElementById('img_video');
+        } else {
+          document.getElementById("img_video").style.display = "none";
+          video = document.getElementById('video');
+        }
+
+          
 
           var opacity = 1; // Initial opacity
           var opacityStep = 0.005; // Opacity decrease step
