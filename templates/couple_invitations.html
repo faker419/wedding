@@ -72,69 +72,72 @@
         const baseUrl = '/couples_data';
         const urlWithParams = `${baseUrl}?id=${guestId}`;
 
-        fetch(urlWithParams, {
-        method: 'GET',
-        headers : {
-            'Content-Type' : 'application/json;charset=utf-8'
-        }
-        })
-        .then(response => {
-            if (!response.ok) {
-            throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(guest_data => {
-            coupleData = guest_data; 
+        const fetchData = () => {
+            fetch(urlWithParams, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(guest_data => {
+                    coupleData = guest_data; 
 
-            const couplesList = document.getElementById('couplesList');
-            couplesList.innerHTML = '';
-            var innerList = '';
+                    const couplesList = document.getElementById('couplesList');
+                    couplesList.innerHTML = '';
+                    var innerList = '';
 
-            const isCheckedMale = guest_data.male_response ? 'checked' : '';
-            const isCheckedFemale = guest_data.female_response ? 'checked' : '';
+                    const isCheckedMale = guest_data.male_response ? 'checked' : '';
+                    const isCheckedFemale = guest_data.female_response ? 'checked' : '';
 
-            document.getElementById('invition_text').innerHTML = `<b>Dear Mr and Mrs ${guest_data.family_name} we forward to you this invitation.</b>`
-            
+                    document.getElementById('invition_text').innerHTML = `<b>Dear Mr and Mrs ${guest_data.family_name} we forward to you this invitation.</b>`
 
-            innerList +=
-            `<tr class="border-bottom">
-                <td>
-                    <div class="fw-bold" id="name_male">${guest_data.male_name} ${guest_data.family_name}</div>
-                </td>
-                <td class="text-end fw-bold">
-                    <input class="form-check-input" name="checkbox_male" id="checkbox_male" type="checkbox" value="" ${isCheckedMale}/>
-                </td>
-            </tr>
-            <tr class="border-bottom">
-                <td>
-                    <div class="fw-bold" id="name_female">${guest_data.female_name} ${guest_data.family_name}</div>
-                </td>
-                <td class="text-end fw-bold">
-                    <input class="form-check-input" name="checkbox_female" id="checkbox_female" type="checkbox" value="" ${isCheckedFemale}/>
-                </td>
-            </tr>`;
 
-            couplesList.innerHTML +=
-            `
-            <table class="table table-borderless mb-0">
-                <thead class="border-bottom">
-                    <tr class="small text-uppercase text-muted">
-                        <th scope="col">Guest Name</th>
-                        <th class="text-end" scope="col">Attending</th>
+                    innerList +=
+                    `<tr class="border-bottom">
+                        <td>
+                            <div class="fw-bold" id="name_male">${guest_data.male_name} ${guest_data.family_name}</div>
+                        </td>
+                        <td class="text-end fw-bold">
+                            <input class="form-check-input" name="checkbox_male" id="checkbox_male" type="checkbox" value="" ${isCheckedMale}/>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    ${innerList}
-                </tbody>
-            </table>
-            `;
-        })
-        .catch(error => {
-            // Handle errors
-            console.error('There was a problem with the fetch operation:', error);
-        });
+                    <tr class="border-bottom">
+                        <td>
+                            <div class="fw-bold" id="name_female">${guest_data.female_name} ${guest_data.family_name}</div>
+                        </td>
+                        <td class="text-end fw-bold">
+                            <input class="form-check-input" name="checkbox_female" id="checkbox_female" type="checkbox" value="" ${isCheckedFemale}/>
+                        </td>
+                    </tr>`;
 
+                    couplesList.innerHTML +=
+                    `
+                    <table class="table table-borderless mb-0">
+                        <thead class="border-bottom">
+                            <tr class="small text-uppercase text-muted">
+                                <th scope="col">Guest Name</th>
+                                <th class="text-end" scope="col">Attending</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${innerList}
+                        </tbody>
+                    </table>
+                    `;
+
+                })
+                .catch(error => {
+                    setTimeout(fetchData, 500);
+                });
+        }; 
+
+        fetchData();
     }
 
 

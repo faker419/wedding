@@ -79,59 +79,64 @@
         const baseUrl = '/singles_data';
         const urlWithParams = `${baseUrl}?id=${guestId}`;
 
-        fetch(urlWithParams, {
-        method: 'GET',
-        headers : {
-            'Content-Type' : 'application/json;charset=utf-8'
-        }
-        })
-        .then(response => {
-            if (!response.ok) {
-            throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(guest_data => {
-            singlesData = guest_data; 
 
-            const singlesList = document.getElementById('singlesList');
-            singlesList.innerHTML = '';
-            var innerList = '';
+        const fetchData = () => {
+            fetch(urlWithParams, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(guest_data => {
+                    singlesData = guest_data; 
 
-            const isChecked = guest_data.response ? 'checked' : '';
+                    const singlesList = document.getElementById('singlesList');
+                    singlesList.innerHTML = '';
+                    var innerList = '';
 
-            document.getElementById('invition_text').innerHTML = `<b>Dear ${guest_data.prefix} ${guest_data.family_name} we forward to you this invitation.</b>`
-            
+                    const isChecked = guest_data.response ? 'checked' : '';
 
-            innerList +=
-            `<tr class="border-bottom">
-                <td>
-                    <div class="fw-bold" id="name">${guest_data.name} ${guest_data.family_name}</div>
-                </td>
-                <td class="text-end fw-bold">
-                    <input class="form-check-input" name="checkbox_singles" id="checkbox_singles" type="checkbox" value="" ${isChecked}/>
-                </td>
-            </tr>`;
+                    document.getElementById('invition_text').innerHTML = `<b>Dear ${guest_data.prefix} ${guest_data.family_name} we forward to you this invitation.</b>`
 
-            singlesList.innerHTML +=
-            `
-            <table class="table table-borderless mb-0">
-                <thead class="border-bottom">
-                    <tr class="small text-uppercase text-muted">
-                        <th scope="col">Guest Name</th>
-                        <th class="text-end" scope="col">Attending</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${innerList}
-                </tbody>
-            </table>
-            `;
-        })
-        .catch(error => {
-            // Handle errors
-            console.error('There was a problem with the fetch operation:', error);
-        });
+
+                    innerList +=
+                    `<tr class="border-bottom">
+                        <td>
+                            <div class="fw-bold" id="name">${guest_data.name} ${guest_data.family_name}</div>
+                        </td>
+                        <td class="text-end fw-bold">
+                            <input class="form-check-input" name="checkbox_singles" id="checkbox_singles" type="checkbox" value="" ${isChecked}/>
+                        </td>
+                    </tr>`;
+
+                    singlesList.innerHTML +=
+                    `
+                    <table class="table table-borderless mb-0">
+                        <thead class="border-bottom">
+                            <tr class="small text-uppercase text-muted">
+                                <th scope="col">Guest Name</th>
+                                <th class="text-end" scope="col">Attending</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${innerList}
+                        </tbody>
+                    </table>
+                    `;
+
+                })
+                .catch(error => {
+                    setTimeout(fetchData, 500);
+                });
+        };
+
+        fetchData();
 
     }
 
