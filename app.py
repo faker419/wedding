@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, jsonify, request,  redirect,  url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 import random
+import datetime
 
 '''
 
@@ -43,6 +44,7 @@ BASE_DIR = '/home/issafares/wedding/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 IMG_ROOT =  os.path.join(STATIC_ROOT, "img")
+
 
 
 
@@ -181,22 +183,41 @@ def get_couple_data():
 @app.route('/api/update_responses', methods=["POST" , "GET"])
 def coupeles_response():
     if request.method == "POST" :
-        jsonData = request.get_json()
-        male_response = jsonData['male_response']
-        female_response = jsonData['female_response']
-        couple_id = jsonData['couple_id']
-        comment = jsonData['comment']
+        try:
 
-        couple = db.session.query(Couples).filter(Couples.id == int(couple_id)).first()
-        setattr(couple,'male_response',male_response)
-        setattr(couple,'female_response',female_response)
-        setattr(couple,'comment',comment)
-        setattr(couple,'is_answered',True)
-        db.session.commit()
+            target_date = datetime.datetime(2024, 3, 18)
+            current_date = datetime.datetime.now()
 
+            if current_date <= target_date:
+                jsonData = request.get_json()
+                male_response = jsonData['male_response']
+                female_response = jsonData['female_response']
+                couple_id = jsonData['couple_id']
+                comment = jsonData['comment']
 
-        json_response = {'message' : 'message'}
-        return jsonify(json_response) 
+                couple = db.session.query(Couples).filter(Couples.id == int(couple_id)).first()
+
+                if couple.is_answered:
+                    message = 'Dear Mr and Mrs {}, your response has been Re-submitted'.format(couple.family_name)
+                else:
+                    message = 'Dear Mr and Mrs {}, your response has been submitted'.format(couple.family_name)
+
+                setattr(couple,'male_response',male_response)
+                setattr(couple,'female_response',female_response)
+                setattr(couple,'comment',comment)
+                setattr(couple,'is_answered',True)
+                db.session.commit()
+            else:
+                message = 'The form was closed on the 18th of March, We ask for your understanding.'
+
+            json_response = {'message' : message}
+            return jsonify(json_response)
+
+        except Exception as e:
+            message = '{}'.format(e)
+        
+            json_response = {'message' : message}
+            return jsonify(json_response)
     
 
 
@@ -229,20 +250,41 @@ def get_single_data():
 @app.route('/api/update_responses_singles', methods=["POST" , "GET"])
 def singles_response():
     if request.method == "POST" :
-        jsonData = request.get_json()
-        response = jsonData['response']
-        single_id = jsonData['single_id']
-        comment = jsonData['comment']
 
-        single = db.session.query(Singles).filter(Singles.id == int(single_id)).first()
-        setattr(single,'response',response)
-        setattr(single,'comment',comment)
-        setattr(single,'is_answered',True)
-        db.session.commit()
+        try:
+
+            target_date = datetime.datetime(2024, 3, 18)
+            current_date = datetime.datetime.now()
+
+            if current_date <= target_date:
+                jsonData = request.get_json()
+                response = jsonData['response']
+                single_id = jsonData['single_id']
+                comment = jsonData['comment']
+
+                single = db.session.query(Singles).filter(Singles.id == int(single_id)).first()
+
+                full_name = single.prefix + ' ' + single.family_name
+                if single.is_answered:
+                    message = 'Dear {}, your response has been Re-submitted'.format(full_name)
+                else:
+                    message = 'Dear {}, your response has been submitted'.format(full_name)
+
+                setattr(single,'response',response)
+                setattr(single,'comment',comment)
+                setattr(single,'is_answered',True)
+                db.session.commit()
+            else:
+                message = 'The form was closed on the 18th of March, We ask for your understanding.'
+
+            json_response = {'message' : message}
+            return jsonify(json_response)
+
+        except Exception as e:
+            message = '{}'.format(e)
         
-
-        json_response = {'message' : 'message'}
-        return jsonify(json_response)
+            json_response = {'message' : message}
+            return jsonify(json_response)
 
 
 

@@ -38,8 +38,8 @@
 
             </div>
         <div class="modal-footer">
-            <button class="btn btn-light-soft text-light" type="button" data-bs-dismiss="modal">Close</button>
-            <button class="btn btn-yellow-soft text-yellow" type="button" data-bs-dismiss="modal" onclick="submitForm()">Submit</button>
+            <button id="close_button" class="btn btn-light-soft text-light" type="button" data-bs-dismiss="modal">Close</button>
+            <button id="submit_button" class="btn btn-yellow-soft text-yellow" type="button"  onclick="submitForm()">Submit</button>
         </div>
         </div>
     </div>
@@ -142,6 +142,14 @@
 
 
     function submitForm() {
+
+        document.getElementById("alertTagResponse").innerHTML = '';
+        var buttonSubmit = document.getElementById("submit_button");
+        var buttonClose = document.getElementById("close_button");
+        buttonSubmit.disabled = true;
+        buttonClose.disabled = true;
+        
+
         let data = new FormData();
         data.response = document.querySelector('form #checkbox_singles').checked;
         data.comment = document.querySelector('form #submitionDescription').value;
@@ -156,12 +164,34 @@
         })
         .then(response => {
             if (response.ok) {
+                response.json()
+                .then(function(response) {
 
                 document.querySelector('form #submitionDescription').value = '';
 
-                
+                document.getElementById("alertTagResponse").innerHTML = ''
+                document.getElementById("alertTagResponse").innerHTML += 
+                    `<div  class="alert alert-yellow alert-dismissible fade show" role="alert">      
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                        ${response.message}      
+                    </div>`
+
+                buttonSubmit.disabled = false;
+                buttonClose.disabled = false;
+
+            });
             } else {
-                console.error('Failed to update responses');
+                console.error('Failed to update response');
+
+                document.getElementById("alertTagResponse").innerHTML = ''
+                document.getElementById("alertTagResponse").innerHTML += 
+                `<div  class="alert alert-yellow alert-dismissible fade show" role="alert">      
+                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                    Failed to update response    
+                </div>`
+
+                buttonSubmit.disabled = false;
+                buttonClose.disabled = false;
             }
         })
         .catch(error => console.error('Error updating responses:', error));
