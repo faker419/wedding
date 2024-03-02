@@ -111,7 +111,7 @@ class Singles(db.Model):
         }
 
 
-db.create_all()
+
 
 
 
