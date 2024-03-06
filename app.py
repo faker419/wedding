@@ -111,7 +111,24 @@ class Singles(db.Model):
         }
 
 
+def insertRecords():
+    with app.app_context():
 
+
+        singles =  db.session.query(Singles).filter(Singles.id == 99).first()
+        if not singles:  
+            singles_to_import = [
+                                    {'prefix': 'Mr', 'name': 'Youssef', 'family_name': 'Attar'},
+                                    {'prefix': 'Mr', 'name': 'Haidar', 'family_name': 'Attar'},
+                                    {'prefix': 'Miss', 'name': 'Hadeel', 'family_name': 'Tahir'},
+                                    {'prefix': 'Mr', 'name': 'Ahmad', 'family_name': 'Kidami'},
+                                ]
+
+            singles_imports = [Singles(**single) for single in singles_to_import]
+            db.session.add_all(singles_imports)
+            db.session.commit()
+
+insertRecords()
 
 
 
